@@ -1,7 +1,6 @@
 package com.github.kafkaatomiccache;
 
 import com.github.kafkaatomiccache.cache.CacheManager;
-import com.github.kafkaatomiccache.event.CacheInvalidationEvent;
 import com.github.kafkaatomiccache.event.CacheInvalidationProducer;
 import com.github.kafkaatomiccache.demo.Product;
 import com.github.kafkaatomiccache.demo.ProductRepository;
