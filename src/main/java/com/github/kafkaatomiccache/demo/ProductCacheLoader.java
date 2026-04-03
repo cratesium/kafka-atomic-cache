@@ -1,8 +1,8 @@
 package com.github.kafkaatomiccache.demo;
 
 import com.github.kafkaatomiccache.loader.CacheLoader;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -14,12 +14,16 @@ import java.util.stream.Collectors;
  * {@code id}. This is the single point of truth for rebuilding the
  * "products" cache.
  */
-@Slf4j
 @Component
-@RequiredArgsConstructor
 public class ProductCacheLoader implements CacheLoader<Long, Product> {
 
+    private static final Logger log = LoggerFactory.getLogger(ProductCacheLoader.class);
+
     private final ProductRepository productRepository;
+
+    public ProductCacheLoader(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @Override
     public String cacheName() {

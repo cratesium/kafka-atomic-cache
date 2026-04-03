@@ -1,0 +1,4 @@
+com/github/kafkaatomiccache/CacheIntegrationTest.class
+com/github/kafkaatomiccache/loader/CacheRefreshOrchestratorTest$StubLoader.class
+com/github/kafkaatomiccache/cache/AtomicCacheTest.class
+com/github/kafkaatomiccache/loader/CacheRefreshOrchestratorTest.class

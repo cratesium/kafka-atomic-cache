@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -43,11 +44,19 @@ class CacheRefreshOrchestratorTest {
         cacheManager = new CacheManager();
     }
 
+    /** Set the @Value field that Spring would normally inject. */
+    private void enableInitialLoad(CacheRefreshOrchestrator orch) throws Exception {
+        Field field = CacheRefreshOrchestrator.class.getDeclaredField("initialLoadOnStartup");
+        field.setAccessible(true);
+        field.set(orch, true);
+    }
+
     @Test
     @DisplayName("initialize() registers caches and loads data")
-    void initializeLoadsCaches() {
+    void initializeLoadsCaches() throws Exception {
         StubLoader loader = new StubLoader(Map.of("a", 1, "b", 2));
         orchestrator = new CacheRefreshOrchestrator(cacheManager, List.of(loader));
+        enableInitialLoad(orchestrator);
         orchestrator.initialize();
 
         assertThat(cacheManager.hasCache("stub")).isTrue();
@@ -57,9 +66,10 @@ class CacheRefreshOrchestratorTest {
 
     @Test
     @DisplayName("refresh() swaps cache data to latest")
-    void refreshSwapsData() {
+    void refreshSwapsData() throws Exception {
         StubLoader loader = new StubLoader(Map.of("x", 10));
         orchestrator = new CacheRefreshOrchestrator(cacheManager, List.of(loader));
+        enableInitialLoad(orchestrator);
         orchestrator.initialize();
 
         // Mutate the loader's backing data
@@ -81,3 +91,4 @@ class CacheRefreshOrchestratorTest {
                 .doesNotThrowAnyException();
     }
 }
+

@@ -3,7 +3,8 @@ package com.github.kafkaatomiccache.loader;
 import com.github.kafkaatomiccache.cache.AtomicCache;
 import com.github.kafkaatomiccache.cache.CacheManager;
 import jakarta.annotation.PostConstruct;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +17,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * performs the initial load on startup, and exposes a {@link #refresh}
  * method for event-driven rebuilds.
  */
-@Slf4j
 @Component
 public class CacheRefreshOrchestrator {
+
+    private static final Logger log = LoggerFactory.getLogger(CacheRefreshOrchestrator.class);
 
     private final CacheManager cacheManager;
     private final Map<String, CacheLoader<?, ?>> loadersByName = new ConcurrentHashMap<>();
@@ -32,10 +34,6 @@ public class CacheRefreshOrchestrator {
         loaders.forEach(loader -> loadersByName.put(loader.cacheName(), loader));
     }
 
-    /**
-     * Register caches and perform the initial data load for every
-     * discovered {@link CacheLoader}.
-     */
     @PostConstruct
     public void initialize() {
         loadersByName.forEach((name, loader) -> {
@@ -49,10 +47,6 @@ public class CacheRefreshOrchestrator {
         }
     }
 
-    /**
-     * Rebuild a single named cache by calling its loader and atomically
-     * swapping the result into the live reference.
-     */
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void refresh(String cacheName) {
         CacheLoader loader = loadersByName.get(cacheName);
@@ -70,9 +64,6 @@ public class CacheRefreshOrchestrator {
         log.info("Cache '{}' refreshed — {} entries in {} ms", cacheName, data.size(), elapsed);
     }
 
-    /**
-     * Refresh <em>all</em> registered caches.
-     */
     public void refreshAll() {
         loadersByName.keySet().forEach(this::refresh);
     }

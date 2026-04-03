@@ -1,0 +1,16 @@
+-------------------------------------------------------------------------------
+Test set: com.github.kafkaatomiccache.loader.CacheRefreshOrchestratorTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.005 s <<< FAILURE! -- in com.github.kafkaatomiccache.loader.CacheRefreshOrchestratorTest
+com.github.kafkaatomiccache.loader.CacheRefreshOrchestratorTest.initializeLoadsCaches -- Time elapsed: 0.002 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: 
+
+expected: 2
+ but was: 0
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
+	at com.github.kafkaatomiccache.loader.CacheRefreshOrchestratorTest.initializeLoadsCaches(CacheRefreshOrchestratorTest.java:54)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+

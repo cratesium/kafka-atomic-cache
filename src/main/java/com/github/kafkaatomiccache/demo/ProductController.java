@@ -3,7 +3,6 @@ package com.github.kafkaatomiccache.demo;
 import com.github.kafkaatomiccache.cache.AtomicCache;
 import com.github.kafkaatomiccache.cache.CacheManager;
 import com.github.kafkaatomiccache.event.CacheInvalidationProducer;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,6 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/products")
-@RequiredArgsConstructor
 public class ProductController {
 
     private final CacheManager cacheManager;
@@ -25,6 +23,14 @@ public class ProductController {
     private final CacheInvalidationProducer invalidationProducer;
 
     private static final String CACHE_NAME = "products";
+
+    public ProductController(CacheManager cacheManager,
+                             ProductRepository productRepository,
+                             CacheInvalidationProducer invalidationProducer) {
+        this.cacheManager = cacheManager;
+        this.productRepository = productRepository;
+        this.invalidationProducer = invalidationProducer;
+    }
 
     // ── Reads (lock-free, straight from cache) ───────────────────────
 
