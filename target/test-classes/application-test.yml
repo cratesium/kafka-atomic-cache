@@ -1,0 +1,8 @@
+spring:
+  kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers}
+    consumer:
+      auto-offset-reset: earliest
+
+  jpa:
+    defer-datasource-initialization: true
